@@ -7,14 +7,20 @@
 ![game](angry_bird.png)
 
 ## Usage
-- Install pygame module
+- Prepare python virtural environment
+```shell
+python3 -m venv venv
 ```
-pip install pygame --break-system-packages
-
+- Activate virtural environment
+```shell
+source venv/bin/activate
 ```
-
+- Install requirements.txt
+```shell
+pip install -r requirements.txt
+```
 - Run the game
-```
+```shell
 python3 main.py
 ```
 
