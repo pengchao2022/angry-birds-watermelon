@@ -50,7 +50,7 @@ jobs:
             --icon "AngryBirdsWatermelon.app" 200 190 \
             --app-drop-link 400 190 \
             --hide-extension "AngryBirdsWatermelon.app" \
-            "Angry Birds.dmg" \
+            "AngryBirdsWatermelon.dmg" \
             "dist/dmg_root/"
 
       - name: Release
