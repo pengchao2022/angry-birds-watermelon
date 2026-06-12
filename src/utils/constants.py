@@ -1,6 +1,24 @@
+import os
+import sys
+
 """
 游戏常量定义
 """
+
+def get_resource_path(relative_path):
+    """
+    获取资源文件的绝对路径。
+    PyInstaller 打包后，资源会被放置在临时目录中，
+    通过 sys._MEIPASS 获取该目录路径。
+    """
+    try:
+        # PyInstaller 创建的临时文件夹路径
+        base_path = sys._MEIPASS
+    except Exception:
+        # 开发环境下，直接使用当前工作目录
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # 屏幕尺寸
 SCREEN_WIDTH = 1000

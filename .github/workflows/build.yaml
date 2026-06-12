@@ -1,0 +1,59 @@
+on:
+  pull_request:
+    types:
+      - closed
+    paths:
+      - 'src/**/*.py'  
+      - 'requirements.txt' 
+      - 'build_script.py' 
+      - '.github/workflows/build.yml' 
+      - 'assets/**'
+
+jobs:
+  build-game:
+    if: github.event.pull_request.merged == true
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build with PyInstaller
+        run: python build_script.py
+
+      - name: Create Professional DMG
+        run: |
+          brew install create-dmg
+          # 创建打包根目录
+          mkdir -p dist/dmg_root
+          cp -r dist/AngryBirdsWatermelon.app dist/dmg_root/
+          
+          # 创建 DMG，关联根目录下的 assets/dmg_background.png
+          create-dmg \
+            --volname "AngryBirds Installer" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --background "assets/dmg_background.png" \
+            --icon "AngryBirdsWatermelon.app" 200 190 \
+            --app-drop-link 400 190 \
+            --hide-extension "AngryBirdsWatermelon.app" \
+            "AngryBirdsWatermelon.dmg" \
+            "dist/dmg_root/"
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: game-build-${{ github.sha }}
+          name: Game Release ${{ github.sha }}
+          files: AngryBirdsWatermelon.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

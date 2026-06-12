@@ -76,75 +76,57 @@ class Game:
     
     def _set_window_icon(self):
         """设置窗口图标 - 支持 ICO 和 PNG 格式"""
-        # 获取项目根目录
-        project_root = os.path.dirname(os.path.dirname(__file__))
-        
-        # 图标文件的可能路径（优先查找您放的 images 文件夹）
-        icon_paths = [
-            # 您选择的位置 - assets/images/favicon.ico
-            os.path.join(project_root, 'assets', 'images', 'favicon.ico'),
-            
-            # 其他可能的位置
-            os.path.join(project_root, 'favicon.ico'),
-            os.path.join(project_root, 'assets', 'favicon.ico'),
-            os.path.join(project_root, 'assets', 'images', 'icon.png'),
-            os.path.join(project_root, 'icon.png'),
+        # 定义可能的相对路径
+        relative_paths = [
+            'assets/images/favicon.ico',
+            'favicon.ico',
+            'assets/favicon.ico',
+            'assets/images/icon.png',
+            'icon.png',
         ]
         
         print("🔍 正在查找图标文件...")
         icon_loaded = False
         
-        for icon_path in icon_paths:
+        for rel_path in relative_paths:
+            # 使用统一的 get_resource_path 获取绝对路径
+            icon_path = get_resource_path(rel_path)
+            
             if os.path.exists(icon_path):
                 try:
-                    # 加载图标
                     icon = pygame.image.load(icon_path)
-                    # 设置窗口图标
                     pygame.display.set_icon(icon)
-                    print(f"✅ 成功加载应用图标: {os.path.basename(icon_path)}")
-                    print(f"📁 图标路径: {icon_path}")
+                    print(f"✅ 成功加载图标: {icon_path}")
                     icon_loaded = True
                     break
                 except Exception as e:
                     print(f"❌ 加载图标失败 {icon_path}: {e}")
-            else:
-                print(f"🔍 未找到: {icon_path}")
         
         if not icon_loaded:
-            print("⚠️ 未找到可用的图标文件，将使用默认Pygame图标")
+            print("⚠️ 未找到有效图标，将使用默认Pygame图标")
     
     def _init_fonts(self):
         """初始化字体"""
-        # 确保字体模块已初始化
         if not pygame.font.get_init():
             pygame.font.init()
         
-        # 字体文件路径
-        fonts_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'fonts')
-        font_path = os.path.join(fonts_dir, 'wqy-microhei-lite.ttc')
+        # 获取字体绝对路径
+        font_path = get_resource_path('assets/fonts/wqy-microhei-lite.ttc')
         
-        print(f"查找字体文件: {font_path}")
-        print(f"字体文件存在: {os.path.exists(font_path)}")
+        print(f"查找字体: {font_path}")
         
-        # 尝试加载文泉驿微米黑字体
         if os.path.exists(font_path):
             try:
                 self.title_font = pygame.font.Font(font_path, 48)
                 self.ui_font = pygame.font.Font(font_path, 28)
                 self.small_font = pygame.font.Font(font_path, 20)
                 self.signature_font = pygame.font.Font(font_path, 16)
-                
-                # 测试字体是否能正常渲染中文
-                test_text = self.title_font.render("测试", True, WHITE)
-                print("✅ 成功加载文泉驿微米黑字体，中文支持正常")
-                
+                print("✅ 成功加载文泉驿字体")
             except Exception as e:
-                print(f"❌ 加载文泉驿字体失败: {e}")
-                print("使用默认字体")
+                print(f"❌ 加载字体失败: {e}")
                 self._load_default_fonts()
         else:
-            print(f"❌ 字体文件未找到: {font_path}")
-            print("使用默认字体")
+            print("❌ 字体文件未找到，使用默认字体")
             self._load_default_fonts()
     
     def _load_default_fonts(self):
@@ -157,33 +139,24 @@ class Game:
     def _init_sounds(self):
         """初始化音效"""
         self.sounds = {}
-        sounds_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'sounds')
+        # 音效文件列表
+        sound_files = {'bg_music': 'assets/sounds/angry_bird.mp3'}
         
-        # 音效文件列表 - 使用您提供的文件名
-        sound_files = {
-            'bg_music': 'angry_bird.mp3'  # 使用您的背景音乐文件
-        }
-        
-        # 尝试加载每个音效
-        for sound_name, filename in sound_files.items():
-            file_path = os.path.join(sounds_dir, filename)
+        for sound_name, rel_path in sound_files.items():
+            file_path = get_resource_path(rel_path)
             if os.path.exists(file_path):
                 try:
                     if sound_name == 'bg_music':
-                        # 背景音乐特殊处理
                         self.sounds[sound_name] = file_path
-                        print(f"✅ 加载背景音乐: {filename}")
+                        print(f"✅ 加载背景音乐: {rel_path}")
                     else:
                         self.sounds[sound_name] = pygame.mixer.Sound(file_path)
-                        print(f"✅ 加载音效: {filename}")
+                        print(f"✅ 加载音效: {rel_path}")
                 except Exception as e:
-                    print(f"❌ 加载音效失败 {filename}: {e}")
-                    self.sounds[sound_name] = None
+                    print(f"❌ 加载音效失败 {rel_path}: {e}")
             else:
-                print(f"⚠️ 音效文件未找到: {filename}")
-                self.sounds[sound_name] = None
+                print(f"⚠️ 音效文件未找到: {rel_path}")
         
-        # 播放背景音乐
         self._play_background_music()
     
     def _play_background_music(self):
