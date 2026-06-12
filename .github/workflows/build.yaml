@@ -32,6 +32,10 @@ jobs:
       - name: Create Professional DMG
         run: |
           brew install create-dmg
+
+          echo "Current directory: $(pwd)"
+          ls -R assets/
+          
           # 创建打包根目录
           mkdir -p dist/dmg_root
           cp -r dist/AngryBirdsWatermelon.app dist/dmg_root/
