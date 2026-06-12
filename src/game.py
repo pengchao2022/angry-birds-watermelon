@@ -50,7 +50,7 @@ class Game:
         self._init_fonts()
         
         # 创建游戏对象
-        slingshot_x = 200
+        slingshot_x = 150
         slingshot_y = 550
         self.background = Background()
         self.slingshot = Slingshot(slingshot_x, slingshot_y)
@@ -202,7 +202,7 @@ class Game:
         self.birds = []
         self.current_bird_index = 0
         for i in range(self.max_birds):
-            bird = Bird(200, 550)
+            bird = Bird(150, 550)
             bird.color = self.bird_colors[i % len(self.bird_colors)]  # 分配不同颜色
             self.birds.append(bird)
         
@@ -894,8 +894,8 @@ class Game:
                 if current_bird and current_bird.dragging:
                     current_bird.dragging = False
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    power_x = current_bird.start_x - mouse_x
-                    power_y = current_bird.start_y - mouse_y
+                    power_x = (current_bird.start_x - mouse_x) * 0.6  # 减小力量系数
+                    power_y = (current_bird.start_y - mouse_y) * 0.6  # 减小力量系数
                     current_bird.launch(power_x, power_y)
             
             elif event.type == pygame.KEYDOWN:
