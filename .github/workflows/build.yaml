@@ -6,7 +6,7 @@ on:
       - 'src/**/*.py'  
       - 'requirements.txt' 
       - 'build_script.py' 
-      - '.github/workflows/build.yml' 
+      - '.github/workflows/build.yaml' 
       - 'assets/**'
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
 
           echo "Current directory: $(pwd)"
           ls -R assets/
-          
+
           # 创建打包根目录
           mkdir -p dist/dmg_root
           cp -r dist/AngryBirdsWatermelon.app dist/dmg_root/
