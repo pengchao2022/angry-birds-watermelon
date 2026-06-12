@@ -87,9 +87,12 @@ class Bird:
     
     def launch(self, power_x, power_y):
         """发射小鸟"""
-        self.velocity_x = power_x * LAUNCH_POWER
-        self.velocity_y = power_y * LAUNCH_POWER
+        launch_power = 0.8
+        self.velocity_x = power_x * launch_power
+        self.velocity_y = power_y * launch_power
         self.launched = True
+        self.dragging = False
+        self.active = True
     
     def check_collision(self, sheep):
         """检测与小羊的碰撞"""
