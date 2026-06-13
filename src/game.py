@@ -20,14 +20,15 @@ try:
     from entities.slingshot import Slingshot
     from environment.background import Background
     from utils.constants import *
+    from utils.version import get_app_version
 except ImportError:
-    # 如果直接运行 game.py，使用相对导入
     from .entities.bird import Bird
     from .entities.sheep import Sheep
     from .entities.watermelon import Watermelon
     from .entities.slingshot import Slingshot
     from .environment.background import Background
     from .utils.constants import *
+    from .utils.version import get_app_version
 
 class Game:
     """游戏主类"""
@@ -831,7 +832,9 @@ class Game:
     
     def draw_signature(self):
         """绘制署名"""
-        signature_text = self.signature_font.render("@2025 Designed by Pengchao Ma", True, (200, 200, 200))
+        version = get_app_version()
+        text = f"@2025 Designed by Maxwell Ma | v{version}"
+        signature_text = self.signature_font.render(text, True, (200, 200, 200))
         
         # 计算居中位置（底部）
         text_x = SCREEN_WIDTH // 2 - signature_text.get_width() // 2  # 水平居中
@@ -894,8 +897,8 @@ class Game:
                 if current_bird and current_bird.dragging:
                     current_bird.dragging = False
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    power_x = (current_bird.start_x - mouse_x) * 0.6  # 减小力量系数
-                    power_y = (current_bird.start_y - mouse_y) * 0.6  # 减小力量系数
+                    power_x = (current_bird.start_x - mouse_x) * 0.4 # 减小力量系数
+                    power_y = (current_bird.start_y - mouse_y) * 0.4 # 减小力量系数
                     current_bird.launch(power_x, power_y)
             
             elif event.type == pygame.KEYDOWN:

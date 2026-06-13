@@ -1,5 +1,6 @@
 import os
 import sys
+import tomllib
 
 """
 游戏常量定义
@@ -19,6 +20,7 @@ def get_resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
 
 # 屏幕尺寸
 SCREEN_WIDTH = 1000
