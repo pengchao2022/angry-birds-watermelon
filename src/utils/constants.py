@@ -22,7 +22,7 @@ def get_resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-# 屏幕尺寸
+# screen size
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 700
 FPS = 60

@@ -2,14 +2,8 @@
 
   In this demo, I will write angry_bird game using Python + Pygame + PyInstaller and will also create .dmg file and releases for Mac Os users download to install 
 
-## Features
-
-- use the pyproject.toml for public configuration meatadata like version control
-
-![game](angry_bird.png)
-
 ## Usage
-- Prepare python virtural environment
+- Prepare python virtural environment if you want to run locally with source code 
 ```shell
 python3 -m venv venv
 ```
@@ -25,6 +19,27 @@ pip install -r requirements.txt
 ```shell
 python3 main.py
 ```
+
+- Download the dmg ad install angry-birds on your Mac OS 
+
+- drag the app to your Applications
+
+![install](./install-1.png)
+
+- open system settings and go to privacy & security
+
+![open-anyway](./open-anyway.png)
+
+- allow open anyway
+
+![open-anyway](./open-anyway-1.png)
+
+- Now you can begin to play the angry birds games
+
+![main](./main-window.png)
+
+
+
 
 ## Control Reference
 
