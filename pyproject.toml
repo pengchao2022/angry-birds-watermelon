@@ -1,6 +1,6 @@
 [project]
 name = "angry-birds-watermelon"
-version = "1.0.2"
+version = "1.0.3"
 description = "一个关于西瓜的愤怒小鸟游戏"
 authors = [
   {name = "maxwell ma", email = "pengchao.ma2@outlook.com"}

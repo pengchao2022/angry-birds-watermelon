@@ -29,6 +29,7 @@ except ImportError:
     from .entities.slingshot import Slingshot
     from .environment.background import Background
     from .utils.constants import *
+    from .utils.version import get_app_version
 
 class Game:
     """游戏主类"""
