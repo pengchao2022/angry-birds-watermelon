@@ -1,23 +1,13 @@
 on:
-  pull_request:
-    types:
-      - closed
-    paths:
-      - 'src/**/*.py'  
-      - 'requirements.txt' 
-      - 'build_script.py' 
-      - '.github/workflows/build.yaml' 
-      - 'assets/**'
+  
   push:
     branches:
       - 'release/*'
       - 'main'
+      - 'developer'
 
 jobs:
   build-game:
-    if: |
-      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
-      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')))
     runs-on: macos-latest
     permissions:
       contents: write
@@ -25,12 +15,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Extract Version from pyproject.toml
+      - name: Extract Version
         id: extract_version
         run: |
           VERSION=$(grep '^version = ' pyproject.toml | cut -d '"' -f 2)
+          if [ -z "$VERSION" ]; then echo "Error: Version not found"; exit 1; fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "检测到版本号: $VERSION"
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -74,15 +64,12 @@ jobs:
           path: AngryBirdsWatermelon-${{ env.VERSION }}.dmg
 
       - name: Release
-        # 确保只在 main 或 release 分支触发
-        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
-          # 使用 version.toml 里的版本号，前面加 v
           tag_name: v${{ env.VERSION }}
-          # 标题也显示版本号
+          # title also with version
           name: "Release v${{ env.VERSION }}"
-          # 确保文件名与你前面生成的动态文件名一致
           files: AngryBirdsWatermelon-${{ env.VERSION }}.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
