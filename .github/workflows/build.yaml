@@ -1,21 +1,13 @@
 on:
-  # pull_request:
-  #   types:
-  #     - closed
-  #   paths:
-  #     - 'src/**/*.py'  
-  #     - 'requirements.txt' 
-  #     - 'build_script.py' 
-  #     - '.github/workflows/build.yaml' 
-  #     - 'assets/**'
+  
   push:
     branches:
       - 'release/*'
       - 'main'
+      - 'developer'
 
 jobs:
   build-game:
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')))
     runs-on: macos-latest
     permissions:
       contents: write
@@ -72,15 +64,12 @@ jobs:
           path: AngryBirdsWatermelon-${{ env.VERSION }}.dmg
 
       - name: Release
-        # 确保只在 main 或 release 分支触发
-        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
-          # 使用 version.toml 里的版本号，前面加 v
           tag_name: v${{ env.VERSION }}
-          # 标题也显示版本号
+          # title also with version
           name: "Release v${{ env.VERSION }}"
-          # 确保文件名与你前面生成的动态文件名一致
           files: AngryBirdsWatermelon-${{ env.VERSION }}.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
