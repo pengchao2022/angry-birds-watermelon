@@ -1,13 +1,13 @@
 on:
-  pull_request:
-    types:
-      - closed
-    paths:
-      - 'src/**/*.py'  
-      - 'requirements.txt' 
-      - 'build_script.py' 
-      - '.github/workflows/build.yaml' 
-      - 'assets/**'
+  # pull_request:
+  #   types:
+  #     - closed
+  #   paths:
+  #     - 'src/**/*.py'  
+  #     - 'requirements.txt' 
+  #     - 'build_script.py' 
+  #     - '.github/workflows/build.yaml' 
+  #     - 'assets/**'
   push:
     branches:
       - 'release/*'
@@ -15,9 +15,7 @@ on:
 
 jobs:
   build-game:
-    if: |
-      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
-      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')))
     runs-on: macos-latest
     permissions:
       contents: write
@@ -25,12 +23,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Extract Version from pyproject.toml
+      - name: Extract Version
         id: extract_version
         run: |
           VERSION=$(grep '^version = ' pyproject.toml | cut -d '"' -f 2)
+          if [ -z "$VERSION" ]; then echo "Error: Version not found"; exit 1; fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "检测到版本号: $VERSION"
 
       - name: Set up Python
         uses: actions/setup-python@v4
