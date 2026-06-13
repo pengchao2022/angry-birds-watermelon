@@ -6,6 +6,17 @@ on:
       - 'main'
       - 'developer'
 
+    paths:
+      - 'src/**'
+      - 'entities/**'
+      - 'environment/**'
+      - 'utils/**'
+      - 'main.py'
+      - 'build_script.py'
+      - 'requirements.txt'
+      - '.github/workflows/build.yaml'
+      - 'assets/**'
+
 jobs:
   build-game:
     runs-on: macos-latest

@@ -1,6 +1,6 @@
 # angry_birds_watermelon
 
-  In this demo, I will write angry_bird game using Pygame module
+  In this demo, I will write angry_bird game using Python + Pygame + PyInstaller and will also create .dmg file and releases for Mac Os users download to install
 
 ## Features
 
