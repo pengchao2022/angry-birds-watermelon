@@ -22,7 +22,6 @@ try:
     from utils.constants import *
     from utils.version import get_app_version
 except ImportError:
-    # 如果直接运行 game.py，使用相对导入
     from .entities.bird import Bird
     from .entities.sheep import Sheep
     from .entities.watermelon import Watermelon
@@ -898,8 +897,8 @@ class Game:
                 if current_bird and current_bird.dragging:
                     current_bird.dragging = False
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    power_x = (current_bird.start_x - mouse_x) * 0.6  # 减小力量系数
-                    power_y = (current_bird.start_y - mouse_y) * 0.6  # 减小力量系数
+                    power_x = (current_bird.start_x - mouse_x) * 0.25 # 减小力量系数
+                    power_y = (current_bird.start_y - mouse_y) * 0.25 # 减小力量系数
                     current_bird.launch(power_x, power_y)
             
             elif event.type == pygame.KEYDOWN:

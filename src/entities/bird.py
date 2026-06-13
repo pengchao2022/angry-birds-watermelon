@@ -87,7 +87,7 @@ class Bird:
     
     def launch(self, power_x, power_y):
         """发射小鸟"""
-        launch_power = 0.8
+        launch_power = 0.5
         self.velocity_x = power_x * launch_power
         self.velocity_y = power_y * launch_power
         self.launched = True
