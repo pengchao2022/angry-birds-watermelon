@@ -1,3 +1,5 @@
+name: Build and Release AngryBirds for macOS App
+
 on:
   
   push:
