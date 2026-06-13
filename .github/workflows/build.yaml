@@ -8,6 +8,9 @@ on:
       - 'build_script.py' 
       - '.github/workflows/build.yaml' 
       - 'assets/**'
+  push:
+    branches:
+      - release/*
 
 jobs:
   build-game:
@@ -52,6 +55,12 @@ jobs:
             --hide-extension "AngryBirdsWatermelon.app" \
             "AngryBirdsWatermelon.dmg" \
             "dist/dmg_root/"
+            
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AngryBirds-Test-Build
+          path: AngryBirdsWatermelon.dmg
 
       - name: Release
         uses: softprops/action-gh-release@v1
