@@ -22,7 +22,15 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Extract Version from pyproject.toml
+        id: extract_version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | cut -d '"' -f 2)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "检测到版本号: $VERSION"
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -56,21 +64,25 @@ jobs:
             --icon "AngryBirdsWatermelon.app" 200 190 \
             --app-drop-link 400 190 \
             --hide-extension "AngryBirdsWatermelon.app" \
-            "AngryBirdsWatermelon.dmg" \
+            "AngryBirdsWatermelon-${{ env.VERSION }}.dmg" \
             "dist/dmg_root/"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: AngryBirds-Test-Build
-          path: AngryBirdsWatermelon.dmg
+          path: AngryBirdsWatermelon-${{ env.VERSION }}.dmg
 
       - name: Release
+        # 确保只在 main 或 release 分支触发
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: game-build-${{ github.sha }}
-          name: Game Release ${{ github.sha }}
-          files: AngryBirdsWatermelon.dmg
+          # 使用 version.toml 里的版本号，前面加 v
+          tag_name: v${{ env.VERSION }}
+          # 标题也显示版本号
+          name: "Release v${{ env.VERSION }}"
+          # 确保文件名与你前面生成的动态文件名一致
+          files: AngryBirdsWatermelon-${{ env.VERSION }}.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

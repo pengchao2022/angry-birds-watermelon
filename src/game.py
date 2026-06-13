@@ -3,6 +3,7 @@
 """
 
 import pygame
+import tomllib
 import sys
 import math
 import os
@@ -20,6 +21,7 @@ try:
     from entities.slingshot import Slingshot
     from environment.background import Background
     from utils.constants import *
+    from utils.version import get_app_version
 except ImportError:
     # 如果直接运行 game.py，使用相对导入
     from .entities.bird import Bird
@@ -831,7 +833,9 @@ class Game:
     
     def draw_signature(self):
         """绘制署名"""
-        signature_text = self.signature_font.render("@2025 Designed by Pengchao Ma", True, (200, 200, 200))
+        version = get_app_version()
+        text = f"@2025 Designed by Maxwell Ma | v{version}"
+        signature_text = self.signature_font.render(text, True, (200, 200, 200))
         
         # 计算居中位置（底部）
         text_x = SCREEN_WIDTH // 2 - signature_text.get_width() // 2  # 水平居中
