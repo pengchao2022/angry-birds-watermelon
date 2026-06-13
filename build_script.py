@@ -20,6 +20,7 @@ PyInstaller.__main__.run([
     '--onedir',
     # 将 assets 文件夹整体打包进去
     '--add-data=assets:assets', 
+    '--add-data=pyproject.toml:.',
     '--noconfirm',
     '--clean',
 ] + icon_arg)

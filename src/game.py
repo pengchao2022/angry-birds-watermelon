@@ -3,7 +3,6 @@
 """
 
 import pygame
-import tomllib
 import sys
 import math
 import os
