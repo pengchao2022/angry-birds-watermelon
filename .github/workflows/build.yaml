@@ -14,7 +14,9 @@ on:
 
 jobs:
   build-game:
-    if: github.event.pull_request.merged == true
+    if: |
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'))
     runs-on: macos-latest
     permissions:
       contents: write
@@ -55,7 +57,7 @@ jobs:
             --hide-extension "AngryBirdsWatermelon.app" \
             "AngryBirdsWatermelon.dmg" \
             "dist/dmg_root/"
-            
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
